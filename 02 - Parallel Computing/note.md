@@ -4,7 +4,7 @@ Komputasi paralel adalah sebuah konsep dalam ilmu komputer di mana beberapa perh
 
 Konsep ini dapat diilustrasikan sebagai berikut:
 
-![ilustrasi komputasi paralel](image/image.png)
+![ilustrasi komputasi paralel](image\image.png)
 
 Pada gambar di atas, kita dapat melihat perbedaan antara pemrosesan sekuensial (serial) dan paralel. Dalam pemrosesan sekuensial, tugas-tugas dieksekusi satu per satu, sedangkan dalam pemrosesan paralel, beberapa tugas dapat dieksekusi secara bersamaan, menghasilkan waktu penyelesaian yang lebih cepat.
 
