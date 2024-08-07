@@ -6,7 +6,7 @@ Concurrency dan Parallelism sering dianggap mirip, namun keduanya memiliki perbe
 
 Concurrency adalah kemampuan untuk menangani beberapa tugas sekaligus dalam periode waktu yang tumpang tindih. Ini tidak berarti tugas-tugas tersebut dijalankan pada saat yang persis sama.
 
-![alt text](..\image\ilustrasiConcurrency.png)
+![alt text](../image/ilustrasiConcurrency.png)
 
 <i>contoh code:</i>
 
