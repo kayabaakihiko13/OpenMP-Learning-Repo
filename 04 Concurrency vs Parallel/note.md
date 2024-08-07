@@ -32,7 +32,7 @@ int main() {
 
 - ### Parallelism
 Parallelism adalah kemampuan untuk menjalankan beberapa tugas atau bagian dari tugas secara benar-benar bersamaan.
-
+![alt text](../image/ilustrasiParallel.png)
 ```cpp
 #include <iostream>
 #include <omp.h>
@@ -72,5 +72,4 @@ int main() {
     return 0;
 }
 ```
-![alt text](../image/ilustrasiParallel.png)
 
