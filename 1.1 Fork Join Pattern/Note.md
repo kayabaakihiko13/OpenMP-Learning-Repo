@@ -14,6 +14,7 @@ hasil block `#pragma omp parallel` mengakibatkan hasil outputnya secara random a
 
 - sequential
 ---
+
 ```cpp
 #include<iostream>
 #include<omp.h>
