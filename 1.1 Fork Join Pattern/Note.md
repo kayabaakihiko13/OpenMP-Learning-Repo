@@ -4,7 +4,7 @@
 
 didalam OpenMP,kita memulai Fork-Join pattern parallel sebagai berikut
 
-![Fork-Join Pattern](..\image\ForkJoin.png)
+![Fork-Join Pattern](../image/ForkJoin.png)
 
 Dalam diagram di atas, kita dapat melihat bagaimana thread utama memecah dirinya menjadi beberapa thread anak. Masing-masing thread anak akan mengerjakan sebagian dari beban kerja total, sehingga komputasi dapat diselesaikan dengan lebih cepat.
 Setelah semua thread anak selesai menjalankan tugas masing-masing, mereka akan "bergabung" (join) kembali dengan thread utama. Pada tahap ini, thread utama akan menunggu hingga semua thread anak telah selesai sebelum melanjutkan eksekusi kode selanjutnya.
