@@ -12,7 +12,7 @@ Setelah semua thread anak selesai menjalankan tugas masing-masing, mereka akan "
 block `#pragma omp parallel`merupakan block untuk melakukan set terhadap thread untuk mengeksekusi pada program tersebut.
 hasil block `#pragma omp parallel` mengakibatkan hasil outputnya secara random alias asyncronus.
 
-- sequential
+- ## Sequential
 ---
 
 ```cpp
@@ -29,7 +29,7 @@ int main(){
 ```
 
 
-- concurency Example
+- ## Concurency Example
 
 ```cpp
 #include<iostream>
@@ -41,7 +41,7 @@ int main(){
 }
 ```
 
-- for SPMD example
+- ## for SPMD example
 
 ```cpp
 #include<iostream>
@@ -53,6 +53,60 @@ int main(){
         int num = omp_get_num_thread();
         printf("Hello from thread %d of %d\n", id, numThreads);
     }
+    return 0;
+}
+```
+
+- ## Size Array with concurency
+```cpp
+#include <iostream>
+#define N 100000
+int main(){
+    int* array = (int*)malloc(N*sizeof(int));
+    int i;
+    if (array == NULL) {  // check if malloc failed
+        fprintf(stderr, "Memory allocation failed!\n");
+        return 1;
+    }
+    for (int i=0;i<N;i++){
+        array[i] = i++;
+
+    }
+}
+```
+
+-- Size Array with for parallel
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>  // Include the OpenMP header
+
+#define N 20000000 // size of the array
+
+int main(void) {
+    int* array = malloc(N * sizeof(int)); // allocate memory
+
+    if (array == NULL) {  // check if malloc failed
+        fprintf(stderr, "Memory allocation failed!\n");
+        return 1;
+    }
+
+    double start_time = omp_get_wtime();  // Start time measurement
+
+    #pragma omp parallel
+    {
+        // Populate array
+        #pragma omp for
+        for (int i = 0; i < N; i++) {
+            array[i] = i + 1;
+        }
+    }
+
+    double end_time = omp_get_wtime();  // End time measurement
+    double execution_time = end_time - start_time;
+
+    printf("Done populating %d elements in %f seconds!\n", N, execution_time);
+    free(array);  
     return 0;
 }
 ```
