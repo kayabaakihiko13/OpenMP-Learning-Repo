@@ -1,0 +1,63 @@
+name: CPP testing
+on: [push, pull_request]
+permissions:
+  contents: write
+jobs:
+  TestingUtama:
+    name: cpp test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+      - name: install requirements
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -qq install clang-tidy clang-format
+      - name: generate git_diff.txt
+        run: |
+          if [ $(git rev-list --count HEAD) -eq 1 ]; then
+            echo "No previous commits to compare against." > git_diff.txt
+          else
+            git diff --name-only HEAD^ > git_diff.txt
+          fi
+      - name: lint committed files
+        shell: python
+        run: |
+          import os
+          import sys
+          import subprocess
+
+          print("Python {}.{}.{}".format(*sys.version_info))
+          with open("git_diff.txt") as in_file:
+            file_modifikasi = sorted(in_file.read().splitlines())
+          print("{} modified files".format(len(file_modifikasi)))
+
+          cpp_exts = tuple(".c .c++ .cc .cpp .cu .cuh .cxx .h .h++ .hh .hpp .hxx".split())
+          cpp_files = [file for file in file_modifikasi if file.lower().endswith(cpp_exts)]
+          print(f"{len(cpp_files)} C++ files modified")
+          if not cpp_files:
+            sys.exit(0)
+
+          subprocess.run(["clang-tidy", "--fix", "-p=build", "--extra-arg=-std=c++11", *cpp_files, "--"],
+              check=True, text=True, stderr=subprocess.STDOUT)
+          subprocess.run(["clang-format", "-i", "-style=file", *cpp_files],
+              check=True, text=True, stderr=subprocess.STDOUT)
+          upper_files = [file for file in cpp_files if file != file.lower()]
+          if upper_files:
+            print(f"{len(upper_files)} files contain uppercase characters:")
+            print("\n".join(upper_files) + "\n")
+          space_files = [file for file in cpp_files if " " in file or "-" in file]
+          if space_files:
+            print(f"{len(space_files)} files contain spaces or hyphens:")
+            print("\n".join(space_files) + "\n")
+          nodir_files = [file for file in cpp_files if file.count(os.sep) != 1]
+          if nodir_files:
+            print(f"{len(nodir_files)} files are not in exactly one directory:")
+            print("\n".join(nodir_files) + "\n")
+          bad_files = len(upper_files + space_files + nodir_files)
+          if bad_files:
+            sys.exit(bad_files)
+      - name: amend commit
+        run: |
+          git commit --amend --no-edit || true
+          git push --force-with-lease origin HEAD:$GITHUB_REF || true
